@@ -28,6 +28,7 @@ To see the SQL that Knex will generate for a given query, see: [Knex Query Lab](
 We have several examples [on the website](http://knexjs.org). Here is the first one to get you started:
 
 ```js
+// Initial reference
 var knex = require('knex')({
   dialect: 'sqlite3',
   connection: {
@@ -75,3 +76,13 @@ knex.schema.createTable('users', function(table) {
   console.error(e);
 });
 ```
+NOTE: When you are referencing knex in more than one files follow this method in order to reuse the existing connection pool. Failing this step makes knex wait forever till it gets timed out.
+
+```js
+// Initial reference (index.js / app.js)
+var knex = require('knex')(connection_object);
+
+// Subsequent references in other modules
+var knex = require('knex').knex;
+
+
